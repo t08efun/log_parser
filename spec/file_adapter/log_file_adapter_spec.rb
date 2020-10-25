@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative '../../app/file_adapter/log.rb'
+require_relative '../../app/model/log.rb'
+
 RSpec.describe FileAdapter::Log do
   let(:file_path) { "#{__dir__}/../fixtures/files/webserver.log" }
   let(:missing_path) { 'missing_path/webserver.log' }
