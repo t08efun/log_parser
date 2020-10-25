@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../../app/model/log.rb'
+
 RSpec.describe Log do
   describe 'object' do
     after(:all) do
