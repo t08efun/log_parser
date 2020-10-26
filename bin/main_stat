@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'get_process_mem'
+file_name = ARGV.first
+before = Time.now
+pid = Process.spawn("./bin/main #{file_name}")
+mem = GetProcessMem.new pid
+max_usage = mem.mb
+loop do
+  begin
+    current_usage = mem.mb
+    max_usage = current_usage if current_usage > max_usage
+    break if mem.bytes.zero?
+  end
+end
+
+puts "Max memory usage: #{max_usage} mb"
+puts "Time: #{Time.now - before}s"
