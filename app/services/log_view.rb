@@ -1,22 +1,23 @@
 # frozen_string_literal: true
 
-require_relative '../model/log.rb'
+require_relative '../model/log'
+require_relative '../mixins/ansi'
 
-# The Renderer class is responsible for rendering output strings
+# The LogView class is responsible for rendering output strings
 class LogView
   class << self
     def index(colorized: true)
       result = []
 
-      Log.each do |log|
+      LogHistory.each do |log_history|
         if colorized
-          url_string = underline(log.url)
-          ips_string = green(log.ips.count)
-          count_string = green(log.count)
+          url_string = ANSI.underline(log_history.url)
+          ips_string = ANSI.green(log_history.ip_set.count)
+          count_string = ANSI.green(log_history.count)
         else
-          url_string = log.url
-          ips_string = log.ips.count
-          count_string = log.count
+          url_string = log_history.url
+          ips_string = log_history.ip_set.count
+          count_string = log_history.count
         end
 
         result << "#{url_string} was visited " \
@@ -24,20 +25,6 @@ class LogView
                   "#{ips_string} unique IPs"
       end
       result.join("\n")
-    end
-
-    private
-
-    def underline(str)
-      "\e[0;4m#{str}\e[1;0m"
-    end
-
-    def white(str)
-      "\e[0;97m#{str}\e[1;0m"
-    end
-
-    def green(str)
-      "\e[0;92m#{str}\e[0;97m"
     end
   end
 end
