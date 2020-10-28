@@ -37,10 +37,10 @@ bundle install
 ```
 ## Approach description
 Script is split into several parts:
-- Log file adapter. Allows to interact with the file as an enumerable. Enumerable included class. Processes the file along the lines. Validates missing path/file, wrong extension, empty file.
+- Log file. Allows to interact with the file as an enumerable. Enumerable included class. Processes the file along the lines. Validates missing path/file, wrong extension, empty file. Parse values.
 - Log model. Keeps ip and url as attrs. Validates url/ip format.
-- Swap file. Describes interaction with swap file. Keeps log data.
-- Log saver. Service for saving logs by batches.
+- LogHistory model. Keeps url, ip set, url count as attrs. Validates url/ips format
+- Model data file. Describes interaction with data file. Keeps log data.
 - Log view. Generates output string.
 
 ## Possible improvements

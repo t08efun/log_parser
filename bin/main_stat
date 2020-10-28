@@ -8,11 +8,9 @@ pid = Process.spawn("./bin/main #{file_name}")
 mem = GetProcessMem.new pid
 max_usage = mem.mb
 loop do
-  begin
-    current_usage = mem.mb
-    max_usage = current_usage if current_usage > max_usage
-    break if mem.bytes.zero?
-  end
+  current_usage = mem.mb
+  max_usage = current_usage if current_usage > max_usage
+  break if mem.bytes.zero?
 end
 
 puts "Max memory usage: #{max_usage} mb"
