@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
-require_relative '../../app/log_file'
-require_relative '../../app/model/log'
+require_relative '../app/log_file'
+require_relative '../app/model/log'
 
 RSpec.describe LogFile do
-  let(:file_path) { "#{__dir__}/../fixtures/files/webserver.log" }
+  let(:file_path) { "#{__dir__}/fixtures/files/webserver.log" }
   let(:missing_path) { 'missing_path/webserver.log' }
-  let(:bad_file_extension_path) { "#{__dir__}/../fixtures/files/webserver.logs" }
-  let(:empty_file_path) { "#{__dir__}/../fixtures/files/empty.log" }
-  let(:good_file_path) { "#{__dir__}/../fixtures/files/webserver.log" }
+  let(:bad_file_extension_path) { "#{__dir__}/fixtures/files/webserver.logs" }
+  let(:empty_file_path) { "#{__dir__}/fixtures/files/empty.log" }
+  let(:good_file_path) { "#{__dir__}/fixtures/files/webserver.log" }
 
   let :logs do
     [

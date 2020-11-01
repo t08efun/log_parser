@@ -32,6 +32,7 @@ class DataFile
   def delete
     File.delete @file_path
     @deleted = true
+    @line_count = 0
   end
 
   def replace_line(num, with:)

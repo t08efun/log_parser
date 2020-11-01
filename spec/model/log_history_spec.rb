@@ -4,10 +4,6 @@ require_relative '../../app/model/log_history'
 
 RSpec.describe LogHistory do
   describe 'object' do
-    after(:each) do
-      LogHistory.clear
-    end
-
     subject { LogHistory.new url: '/', ip_set: Set.new(['0.0.0.0']), count: 0 }
 
     it 'has url field' do

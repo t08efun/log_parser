@@ -8,8 +8,6 @@ require_relative 'contracts/log_history_contract'
 class Model
   class << self
     def data_file
-      @data_file = DataFile.new(to_s.downcase) if @data_file&.deleted?
-
       @data_file ||= DataFile.new(to_s.downcase)
     end
 
@@ -26,7 +24,6 @@ class Model
       data_file.each do |line|
         line_values = parse_fields line
         return new(**line_values) if args.all? do |key, value|
-          line_values[key] &&
           line_values[key] == value
         end
       end
@@ -62,11 +59,11 @@ class Model
 
     def clear
       data_file.delete
+      data_file = nil
     end
 
     private
 
-    # need to specify the way of parse
     def parse_fields(line)
       {}.tap do |result|
         data = line.split(';').map.with_index do |value, i|
@@ -95,6 +92,13 @@ class Model
     end
   end
 
+  def initialize(args)
+    @contract_result = contract.call(args)
+    attributes.each do |var_key|
+      instance_variable_set :"@#{var_key}", args[var_key]
+    end
+  end
+
   def attributes
     self.class.attributes
   end
@@ -109,13 +113,6 @@ class Model
 
   def valid?
     errors.empty?
-  end
-
-  def initialize(args)
-    @contract_result = contract.call(args)
-    attributes.each do |var_key|
-      instance_variable_set :"@#{var_key}", args[var_key]
-    end
   end
 
   # Write record to the end of file or replace other

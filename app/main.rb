@@ -32,6 +32,5 @@ begin
 
   LogHistory.clear
 rescue StandardError => e
-  puts e.backtrace
-  puts "\033[91m#{e.message}\033[39m"
+  puts ANSI.red e.message
 end
