@@ -6,7 +6,6 @@ require_relative 'contracts/log_history_contract'
 # The Model class is responsible for keeping data
 class Model
   class << self
-
     def create(args)
       args[:id] = storage.count
       obj = new(**args)
@@ -23,8 +22,8 @@ class Model
       nil
     end
 
-    def each &block
-      storage.each &block
+    def each(&block)
+      storage.each(&block)
     end
 
     def all
@@ -52,7 +51,7 @@ class Model
     end
 
     private
-    
+
     def parse_fields(line)
       {}.tap do |result|
         data = line.split(';').map.with_index do |value, i|
