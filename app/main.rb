@@ -32,5 +32,6 @@ begin
 
   LogHistory.clear
 rescue StandardError => e
+  puts e.backtrace
   puts ANSI.red e.message
 end

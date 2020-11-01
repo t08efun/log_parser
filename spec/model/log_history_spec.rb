@@ -114,14 +114,14 @@ RSpec.describe LogHistory do
 
       it 'has id field' do
         logs_history.each.with_index do |log, i|
-          expect(log.id).to eq(i + 1)
+          expect(log.id).to eq(i)
         end
       end
 
       context 'has all data' do
         it 'with `find_by`' do
           obj = LogHistory.find_by(url: '/')
-          expect(obj.id).to eq(1)
+          expect(obj.id).to eq(0)
           expect(obj.url).to eq('/')
           expect(obj.ip_set).to eq Set.new(['0.0.0.0'])
           expect(obj.count).to eq(1)

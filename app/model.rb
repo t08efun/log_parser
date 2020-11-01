@@ -1,48 +1,34 @@
 # frozen_string_literal: true
 
-require_relative 'model/data_file'
 require_relative 'contracts/log_contract'
 require_relative 'contracts/log_history_contract'
 
 # The Model class is responsible for keeping data
 class Model
   class << self
-    def data_file
-      @data_file ||= DataFile.new(to_s.downcase)
-    end
 
-    # Save record to data file
     def create(args)
-      args[:id] = data_file.line_count + 1
+      args[:id] = storage.count
       obj = new(**args)
-      data_file.write obj.serialize
+      storage << obj
       obj
     end
 
-    # Get record from data file
     def find_by(args)
-      data_file.each do |line|
-        line_values = parse_fields line
-        return new(**line_values) if args.all? do |key, value|
-          line_values[key] == value
+      storage.each do |obj|
+        return obj if args.all? do |key, value|
+          obj.send(key) == value
         end
       end
       nil
     end
 
-    # Enumerate records as model objects
-    def each
-      data_file.each do |line|
-        line_values = parse_fields line
-        yield new(**line_values)
-      end
+    def each &block
+      storage.each &block
     end
 
     def all
-      data_file.map do |line|
-        line_values = parse_fields line
-        new(**line_values)
-      end
+      storage
     end
 
     def contract_class
@@ -58,12 +44,15 @@ class Model
     end
 
     def clear
-      data_file.delete
-      data_file = nil
+      @storage.clear
+    end
+
+    def storage
+      @storage ||= []
     end
 
     private
-
+    
     def parse_fields(line)
       {}.tap do |result|
         data = line.split(';').map.with_index do |value, i|
@@ -120,7 +109,7 @@ class Model
     return false unless valid?
 
     if id
-      self.class.data_file.replace_line id, with: serialize
+      self.class.storage[id] = self
     else
       self.id = self.class.create(to_h).id
     end
