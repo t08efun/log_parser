@@ -31,6 +31,12 @@ bundle install
 ```
 ./bin/main path/to/webserver.log
 ```
+
+or, if you want to see memory consumption and executing time, run
+
+```
+./bin/main_stat path/to/webserver.log
+```
 ## Run specs
 ```
 ./bin/rspec
