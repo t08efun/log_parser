@@ -3,7 +3,7 @@
 # For output modifying
 module ANSI
   def self.underline(str)
-    "\e[0;4m#{str}\e[1;0m"
+    "\e[0;4;97m#{str}\e[0;97m"
   end
 
   def self.white(str)
