@@ -49,35 +49,6 @@ class Model
     def storage
       @storage ||= []
     end
-
-    private
-
-    def parse_fields(line)
-      {}.tap do |result|
-        data = line.split(';').map.with_index do |value, i|
-          field_type = fields[attributes[i]]
-
-          parse_method = "parse_#{field_type.to_s.downcase}"
-          if respond_to?(parse_method, true)
-            send(parse_method.to_s, value)
-          else
-            value
-          end
-        end
-
-        attributes.each.with_index do |key, i|
-          result[key] = data[i]
-        end
-      end
-    end
-
-    def parse_integer(str)
-      str.to_i
-    end
-
-    def parse_set(str)
-      Set.new str.split(',')
-    end
   end
 
   def initialize(args)
@@ -113,21 +84,6 @@ class Model
       self.id = self.class.create(to_h).id
     end
     true
-  end
-
-  # Serialize record to string
-  def serialize
-    attributes.map do |key|
-      var = send key
-      case var
-      when Set
-        var.to_a.join(',')
-      when Array
-        var.join(',')
-      else
-        var
-      end
-    end.join(';')
   end
 
   def to_h
